@@ -1,0 +1,133 @@
+7. WAP to Implement doubly link list with primitive operations 
+a) Create a doubly linked list. 
+b) Insert a new node to the left of the node. 
+c) Delete the node based on a specific value d) Display the contents of the list
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node{
+    int data;
+    struct node* next;
+    struct node* prev;
+};
+
+struct node* head = NULL;
+
+struct node *create(int val){
+    struct node *newnode = (struct node*)malloc(sizeof(struct node));
+    if(newnode == NULL){
+        printf("Memory allocation failed\n");
+        return NULL;
+    }
+    newnode->data = val;
+    newnode->next = NULL;
+    newnode->prev = NULL;
+    return newnode;
+}
+
+void insert(int val, int key){
+    struct node *current = head, *newnode;
+    newnode = create(val);
+    if(newnode == NULL) return;
+
+    if(head == NULL){
+        head = newnode;
+        return;
+    }
+
+    while(current != NULL && current->data != key){
+        current = current->next;
+    }
+
+    if(current == NULL){
+        printf("Key not found\n");
+        return;
+    }
+
+    // Insert before current
+    newnode->next = current;
+    newnode->prev = current->prev;
+
+    if(current->prev != NULL)
+        current->prev->next = newnode;
+    else
+        head = newnode;
+
+    current->prev = newnode;
+}
+
+void delete_val(int val){
+    struct node *current = head;
+
+    if(head == NULL){
+        printf("Deletion not possible\n");
+        return;
+    }
+
+    while(current != NULL && current->data != val)
+        current = current->next;
+
+    if(current == NULL){
+        printf("Value not found\n");
+        return;
+    }
+
+    if(current->prev != NULL)
+        current->prev->next = current->next;
+    else
+        head = current->next;
+
+    if(current->next != NULL)
+        current->next->prev = current->prev;
+
+    free(current);
+}
+
+void display(){
+    struct node *temp = head;
+
+    if(head == NULL){
+        printf("List is empty\n");
+        return;
+    }
+
+    while(temp != NULL){
+        printf("%d <-> ", temp->data);
+        temp = temp->next;
+    }
+    printf("NULL\n");
+}
+
+int main(){
+    int choice,val,key;
+    printf("----MAIN MENU----\n1. Insert left to a node\n2. Delete a key value\n3. Display\n4. Exit\n");
+    while(1){
+        printf("Choice: ");
+        scanf("%d",&choice);
+
+        switch(choice){
+            case 1:
+                printf("Enter value and key: ");
+                scanf("%d %d",&val,&key);
+                insert(val,key);
+                break;
+
+            case 2:
+                printf("Enter key: ");
+                scanf("%d",&key);
+                delete_val(key);
+                break;
+
+            case 3:
+                display();
+                break;
+
+            case 4:
+                exit(0);
+
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}
