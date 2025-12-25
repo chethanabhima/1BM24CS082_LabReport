@@ -1,0 +1,98 @@
+3b) WAP to simulate the working of a circular queue of integers using an array. 
+Provide the following operations: Insert, Delete & Display. The program should print appropriate messages for queue empty and queue overflow conditions.
+
+#include <stdio.h>
+#define MAX 5
+
+int cq[MAX];
+int front = -1, rear = -1;
+
+
+void insert(int item)
+{
+    if ((rear + 1) % MAX == front)
+    {
+        printf("Queue Overflow\n");
+    }
+    else
+    {
+        if (front == -1)
+            front = 0;
+        rear = (rear + 1) % MAX;
+        cq[rear] = item;
+        printf("Element inserted\n");
+    }
+}
+
+
+void delete()
+{
+    if (front == -1)
+    {
+        printf("Queue is Empty\n");
+    }
+    else
+    {
+        printf("Deleted element: %d\n", cq[front]);
+        if (front == rear)
+        {
+            front = rear = -1;
+        }
+        else
+        {
+            front = (front + 1) % MAX;
+        }
+    }
+}
+
+
+void display()
+{
+    int i;
+    if (front == -1)
+    {
+        printf("Queue is Empty\n");
+    }
+    else
+    {
+        printf("Queue elements:\n");
+        i = front;
+        while (i != rear)
+        {
+            printf("%d\n", cq[i]);
+            i = (i + 1) % MAX;
+        }
+        printf("%d\n", cq[i]);
+    }
+}
+
+int main()
+{
+    int choice, item;
+
+    while (1)
+    {
+        printf("\n1.Insert\n2.Delete\n3.Display\n4.Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                printf("Enter element: ");
+                scanf("%d", &item);
+                insert(item);
+                break;
+            case 2:
+                delete();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}
