@@ -1,0 +1,183 @@
+4. WAP to Implement Singly Linked List with following operations 
+a) Create a linked list.
+b) Insertion of a node at first position, at any position and at end of list. 
+Display the contents of the linked list. 
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node {
+    int data;
+    struct node *next;
+};
+
+struct node *start = NULL;
+
+struct node *create(struct node *start) {
+    struct node *new_node, *ptr;
+    int num;
+
+    printf("Enter data (-1 to stop): ");
+    scanf("%d", &num);
+
+    while(num != -1) {
+        new_node = (struct node *)malloc(sizeof(struct node));
+        new_node->data = num;
+        new_node->next = NULL;
+
+        if(start == NULL) {
+            start = new_node;
+        } else {
+            ptr = start;
+            while(ptr->next != NULL) {
+                ptr = ptr->next;
+            }
+            ptr->next = new_node;
+        }
+
+        printf("Enter data (-1 to stop): ");
+        scanf("%d", &num);
+    }
+    return start;
+}
+
+
+struct node *display(struct node *start) {
+    struct node *ptr = start;
+    if(start == NULL) {
+        printf("List is empty.\n");
+        return start;
+    }
+
+    printf("List: ");
+    while(ptr != NULL) {
+        printf("%d ", ptr->data);
+        ptr = ptr->next;
+    }
+    printf("\n");
+    return start;
+}
+
+struct node *insert_beg(struct node *start) {
+    int num;
+    struct node *new_node;
+
+    printf("Enter data: ");
+    scanf("%d", &num);
+
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->data = num;
+    new_node->next = start;
+    start = new_node;
+
+    return start;
+}
+
+
+struct node *insert_end(struct node *start) {
+    int num;
+    struct node *new_node, *ptr;
+
+    printf("Enter data: ");
+    scanf("%d", &num);
+
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->data = num;
+    new_node->next = NULL;
+
+    if(start == NULL)
+        return new_node;
+
+    ptr = start;
+    while(ptr->next != NULL) {
+        ptr = ptr->next;
+    }
+    ptr->next = new_node;
+
+    return start;
+}
+
+
+struct node *insert_bef(struct node *start) {
+    int num, val;
+    struct node *new_node, *ptr, *preptr;
+
+    printf("Enter data: ");
+    scanf("%d", &num);
+
+    printf("Enter value before which new data must be inserted: ");
+    scanf("%d", &val);
+
+    new_node = (struct node *)malloc(sizeof(struct node));
+    new_node->data = num;
+
+    ptr = start;
+
+    if(ptr != NULL && ptr->data == val) {
+        new_node->next = start;
+        start = new_node;
+        return start;
+    }
+
+    while(ptr != NULL && ptr->data != val) {
+        preptr = ptr;
+        ptr = ptr->next;
+    }
+
+    if(ptr == NULL) {
+        printf("Value not found.\n");
+        free(new_node);
+        return start;
+    }
+
+    preptr->next = new_node;
+    new_node->next = ptr;
+
+    return start;
+}
+
+int main() {
+    int choice;
+    printf("\n--- MAIN MENU ---\n");
+        printf("1. Create List\n");
+        printf("2. Display\n");
+        printf("3. Insert at Beginning\n");
+        printf("4. Insert at End\n");
+        printf("5. Insert Before a Node\n");
+        printf("6. Exit\n");
+    while(1){
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case 1:
+                start = create(start);
+                break;
+
+            case 2:
+                start = display(start);
+                break;
+
+            case 3:
+                start = insert_beg(start);
+                break;
+
+            case 4:
+                start = insert_end(start);
+                break;
+
+            case 5:
+                start = insert_bef(start);
+                break;
+
+            case 6:
+                exit(0);
+
+            default:
+                printf("Invalid Choice\n");
+        }
+
+    }
+
+    return 0;
+}
