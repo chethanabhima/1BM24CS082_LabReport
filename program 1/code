@@ -1,0 +1,81 @@
+1. Write a program to simulate the working of stack using an array with the following: 
+a) Push 
+b) Pop 
+c) Display The program should print appropriate messages for stack overflow, stack underflow.
+
+
+#include <stdio.h>
+#define MAX 5
+
+int stack[MAX];
+int top = -1;
+
+
+void push(int item)
+{
+    if (top == MAX - 1)
+        printf("Stack Overflow\n");
+    else
+    {
+        top++;
+        stack[top] = item;
+        printf("Element pushed\n");
+    }
+}
+
+
+void pop()
+{
+    if (top == -1)
+        printf("Stack Underflow\n");
+    else
+    {
+        printf("Popped element: %d\n", stack[top]);
+        top--;
+    }
+}
+
+
+void display()
+{
+    int i;
+    if (top == -1)
+        printf("Stack is empty\n");
+    else
+    {
+        printf("Stack elements:\n");
+        for (i = top; i >= 0; i--)
+            printf("%d\n", stack[i]);
+    }
+}
+
+int main()
+{
+    int choice, item;
+
+    while (1)
+    {
+        printf("\n1.Push\n2.Pop\n3.Display\n4.Exit\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                printf("Enter element: ");
+                scanf("%d", &item);
+                push(item);
+                break;
+            case 2:
+                pop();
+                break;
+            case 3:
+                display();
+                break;
+            case 4:
+                return 0;
+            default:
+                printf("Invalid choice\n");
+        }
+    }
+}
