@@ -1,0 +1,81 @@
+8. Write a program 
+a) To construct a binary Search tree. 
+b) To traverse the tree using all the methods i.e., in-order, preorder and post order 
+c) To display the elements in the tree.
+
+#include<stdio.h>
+#include<stdlib.h>
+
+struct node{
+    int data;
+    struct node *left, *right;
+};
+
+struct node *create(int value){
+     struct node *newnode=(struct node*)malloc(sizeof(struct node));
+     newnode->data=value;
+     newnode->left=newnode->right=NULL;
+     return newnode;
+}
+
+struct node *insert(struct node *root,int value){
+        if(root==NULL){
+            return create(value);
+        }
+        if(value<root->data){
+            root->left=insert(root->left,value);
+        }
+        else if(value>root->data){
+            root->right=insert(root->right,value);
+        }
+        return root;
+}
+
+void inorder(struct node *root){
+        if(root!=NULL){
+            inorder(root->left);
+            printf("%d\t",root->data);
+            inorder(root->right);
+        }
+}
+
+void preorder(struct node *root){
+        if(root!=NULL){
+            printf("%d\t",root->data);
+            preorder(root->left);
+            preorder(root->right);
+        }
+}
+
+void postorder(struct node *root){
+        if(root!=NULL){
+            postorder(root->left);
+            postorder(root->right);
+            printf("%d\t",root->data);
+        }
+}
+
+void display(struct node *root){
+        printf("\nElements in tree:\n");
+        inorder(root);
+        printf("\t");
+}
+
+int main(){
+        struct node *root=NULL;
+        int n,val;
+        printf("enter number of nodes:");
+        scanf("%d",&n);
+        for (int i=0;i<n;i++){
+            scanf("%d",&val);
+            root=insert(root,val);
+        }
+        printf("\nInorder:\n");
+        inorder(root);
+        printf("\nPreorder:\n");
+        preorder(root);
+        printf("\nPostorder:\n");
+        postorder(root);
+        display(root);
+        return 0;
+}
